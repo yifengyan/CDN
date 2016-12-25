@@ -1,0 +1,29 @@
+#!/bin/bash
+HOSTS=(ec2-54-210-1-206.compute-1.amazonaws.com                
+ec2-54-67-25-76.us-west-1.compute.amazonaws.com         
+ec2-35-161-203-105.us-west-2.compute.amazonaws.com      
+ec2-52-213-13-179.eu-west-1.compute.amazonaws.com       
+ec2-52-196-161-198.ap-northeast-1.compute.amazonaws.com 
+ec2-54-255-148-115.ap-southeast-1.compute.amazonaws.com 
+ec2-13-54-30-86.ap-southeast-2.compute.amazonaws.com    
+ec2-52-67-177-90.sa-east-1.compute.amazonaws.com        
+ec2-35-156-54-135.eu-central-1.compute.amazonaws.com 
+)
+
+# The way to run the deployCDN is: ./deployCDN -p <port> -o <origin> -n <name> -u <username> -i <keyfile>
+# port is port number, origin is the origin server address or IP, name is domain name, username is student's ID, keyfile is private key file
+port=$2
+origin=$4
+name=$6
+username=$8
+keyfile=${10}
+
+#Begin the running 
+ssh -i ${keyfile} ${username}@cs5700cdnproject.ccs.neu.edu "./dnsserver -p $port -n $name < /dev/null > ./logfile 2>&1 &"
+echo "The DNS server is running successfully!"
+# Run HTTP servers in all replicated servers.
+for host in "${HOSTS[@]}"
+do
+  ssh -i ${keyfile} ${username}@${host} "./httpserver -p $port -o $origin < /dev/null > ./logfile 2>&1 &"
+  echo "HTTP server is running under $host server now!"
+done
