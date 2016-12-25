@@ -9,7 +9,9 @@ ec2-54-255-148-115.ap-southeast-1.compute.amazonaws.com	Singapore
 ec2-13-54-30-86.ap-southeast-2.compute.amazonaws.com	Sydney
 ec2-52-67-177-90.sa-east-1.compute.amazonaws.com	Sao Paolo
 ec2-35-156-54-135.eu-central-1.compute.amazonaws.com    Frankfurta
+
 ------------------------------------------------------------------------------------
+
 I.	High level approach
 a.	DNSSever:
 The DNS Server calculates the distance between client and all the replica servers and gives back the IP address of the nearest replica server with the help of active measurements.
